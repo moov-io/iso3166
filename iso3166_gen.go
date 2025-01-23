@@ -114,7 +114,7 @@ package iso3166
 		}
 		countryNamesValue := strings.Join(countryNames, `","`)
 
-		fmt.Fprintf(&buf, fmt.Sprintf(`"%s": []string{"%s"},`+"\n", countryCode, countryNamesValue))
+		fmt.Fprintf(&buf, fmt.Sprintf(`"%s": {"%s"},`+"\n", countryCode, countryNamesValue))
 	}
 	fmt.Fprintln(&buf, "}")
 
