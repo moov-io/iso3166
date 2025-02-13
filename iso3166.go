@@ -44,3 +44,12 @@ func LookupCode(input string) string {
 	}
 	return ""
 }
+
+// GetName returns the ISO 3166 name for a given ISO 3166-1-alpha-2 code
+func GetName(code string) string {
+	names := countryCodes[strings.ToUpper(code)]
+	if len(names) > 0 {
+		return names[0]
+	}
+	return ""
+}

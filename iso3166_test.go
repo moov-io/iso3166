@@ -36,3 +36,10 @@ func TestLookupCode(t *testing.T) {
 	require.Equal(t, "US", iso3166.LookupCode("united states"))
 	require.Equal(t, "GB", iso3166.LookupCode("ENGLAND"))
 }
+
+func TestGetName(t *testing.T) {
+	require.Equal(t, "", iso3166.GetName(""))
+	require.Equal(t, "", iso3166.GetName("not-found"))
+
+	require.Equal(t, "United States of America", iso3166.GetName("us"))
+}
