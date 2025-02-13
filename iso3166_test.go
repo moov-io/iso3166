@@ -33,8 +33,10 @@ func TestValidate(t *testing.T) {
 }
 
 func TestLookupCode(t *testing.T) {
+	require.Equal(t, "US", iso3166.LookupCode("U.S.A"))
 	require.Equal(t, "US", iso3166.LookupCode("united states"))
 	require.Equal(t, "GB", iso3166.LookupCode("ENGLAND"))
+	require.Equal(t, "VI", iso3166.LookupCode("U.S.,  Virgin Islands"))
 }
 
 func TestGetName(t *testing.T) {

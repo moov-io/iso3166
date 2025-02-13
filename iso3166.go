@@ -30,11 +30,18 @@ func Valid(code string) bool {
 	return ok
 }
 
+var (
+	punctuationRemover = strings.NewReplacer(".", "", ",", "")
+)
+
 // LookupCode will attempt to find a valid ISO 3166-1-alpha-2 code
 // for the given country name.
 //
 // Example: "United States" = "US"
 func LookupCode(input string) string {
+	input = punctuationRemover.Replace(input)
+	input = strings.ReplaceAll(input, "  ", " ")
+
 	for code, names := range countryCodes {
 		for _, name := range names {
 			if strings.EqualFold(input, name) {
