@@ -22,11 +22,22 @@ import (
 )
 
 // Valid returns successful if code is a valid ISO 3166-1-alpha-2
-// country code.
+// or ISO 3166-1-alpha-3 country code.
 //
-// Example: US
+// Example: US, USA
 func Valid(code string) bool {
-	_, ok := countryCodes[strings.ToUpper(code)]
+	return ValidAlpha2(code) || ValidAlpha3(code)
+}
+
+// Valid returns successful if code is a valid ISO 3166-1-alpha-2 country code
+func ValidAlpha2(code string) bool {
+	_, ok := alpha2Codes[strings.ToUpper(code)]
+	return ok
+}
+
+// Valid returns successful if code is a valid ISO 3166-1-alpha-3 country code.
+func ValidAlpha3(code string) bool {
+	_, ok := alpha3Codes[strings.ToUpper(code)]
 	return ok
 }
 
@@ -34,29 +45,62 @@ var (
 	punctuationRemover = strings.NewReplacer(".", "", ",", "")
 )
 
-// LookupCode will attempt to find a valid ISO 3166-1-alpha-2 code
-// for the given country name.
+// LookupCode will attempt to find a valid ISO 3166-1-alpha-2 code for the given country name.
 //
 // Example: "United States" = "US"
+//
+// Deprecated: Use Alpha2 instead
 func LookupCode(input string) string {
+	return Alpha2(input)
+}
+
+// LookupCode will attempt to find a valid ISO 3166-1-alpha-2 code for the given country name.
+//
+// Example: "United States" = "US"
+func Alpha2(input string) string {
 	input = punctuationRemover.Replace(input)
 	input = strings.ReplaceAll(input, "  ", " ")
 
-	for code, names := range countryCodes {
+	for code, names := range alpha2Codes {
 		for _, name := range names {
 			if strings.EqualFold(input, name) {
 				return code
 			}
 		}
 	}
+
 	return ""
 }
 
-// GetName returns the ISO 3166 name for a given ISO 3166-1-alpha-2 code
+// LookupCode will attempt to find a valid ISO 3166-1-alpha-3 code for the given country name.
+//
+// Example: "Saudi Arabia"  = "SAU"
+func Alpha3(input string) string {
+	input = punctuationRemover.Replace(input)
+	input = strings.ReplaceAll(input, "  ", " ")
+
+	for code, names := range alpha3Codes {
+		for _, name := range names {
+			if strings.EqualFold(input, name) {
+				return code
+			}
+		}
+	}
+
+	return ""
+}
+
+// GetName returns the ISO 3166 name for a given ISO 3166-1-alpha-2 or ISO 3166-1-alpha-3 code
 func GetName(code string) string {
-	names := countryCodes[strings.ToUpper(code)]
+	names := alpha2Codes[strings.ToUpper(code)]
 	if len(names) > 0 {
 		return names[0]
 	}
+
+	names = alpha3Codes[strings.ToUpper(code)]
+	if len(names) > 0 {
+		return names[0]
+	}
+
 	return ""
 }
