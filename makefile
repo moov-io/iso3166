@@ -1,9 +1,3 @@
-.PHONY: all generate check
-all: check
-
-generate:
-	@go run iso3166_gen.go
-
 .PHONY: check
 check:
 ifeq ($(OS),Windows_NT)

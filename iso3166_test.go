@@ -25,9 +25,24 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestValidate(t *testing.T) {
+func TestValid(t *testing.T) {
+	require.True(t, iso3166.Valid("US"))
+	require.True(t, iso3166.Valid("USA"))
+	require.True(t, iso3166.Valid("SS"))
+	require.False(t, iso3166.Valid(""))
+	require.False(t, iso3166.Valid("QZ"))
+}
+
+func TestValidAlpha2(t *testing.T) {
 	require.True(t, iso3166.Valid("US"))
 	require.True(t, iso3166.Valid("SS"))
+	require.False(t, iso3166.Valid(""))
+	require.False(t, iso3166.Valid("QZ"))
+}
+
+func TestValidAlpha3(t *testing.T) {
+	require.True(t, iso3166.Valid("USA"))
+	require.True(t, iso3166.Valid("SSD"))
 	require.False(t, iso3166.Valid(""))
 	require.False(t, iso3166.Valid("QZ"))
 }
@@ -39,9 +54,24 @@ func TestLookupCode(t *testing.T) {
 	require.Equal(t, "VI", iso3166.LookupCode("U.S.,  Virgin Islands"))
 }
 
+func TestAlpha2(t *testing.T) {
+	require.Equal(t, "US", iso3166.Alpha2("U.S.A"))
+	require.Equal(t, "US", iso3166.Alpha2("united states"))
+	require.Equal(t, "GB", iso3166.Alpha2("ENGLAND"))
+	require.Equal(t, "VI", iso3166.Alpha2("U.S.,  Virgin Islands"))
+}
+
+func TestAlpha3(t *testing.T) {
+	require.Equal(t, "USA", iso3166.Alpha3("U.S.A"))
+	require.Equal(t, "USA", iso3166.Alpha3("united states"))
+	require.Equal(t, "GBR", iso3166.Alpha3("ENGLAND"))
+	require.Equal(t, "VIR", iso3166.Alpha3("U.S.,  Virgin Islands"))
+}
+
 func TestGetName(t *testing.T) {
 	require.Equal(t, "", iso3166.GetName(""))
 	require.Equal(t, "", iso3166.GetName("not-found"))
 
 	require.Equal(t, "United States of America", iso3166.GetName("us"))
+	require.Equal(t, "United States of America", iso3166.GetName("usa"))
 }
