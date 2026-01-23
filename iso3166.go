@@ -41,9 +41,7 @@ func ValidAlpha3(code string) bool {
 	return ok
 }
 
-var (
-	punctuationRemover = strings.NewReplacer(".", "", ",", "")
-)
+var punctuationRemover = strings.NewReplacer(".", "", ",", "")
 
 // LookupCode will attempt to find a valid ISO 3166-1-alpha-2 code for the given country name.
 //
@@ -106,11 +104,29 @@ func GetName(code string) string {
 }
 
 // NumericFromAlpha2 returns the numeric code from a given alpha-2 code.
-func NumericFromAlpha2(alpha2 string) string {
-	return alpha2ToNumeric[strings.ToUpper(alpha2)]
+func NumericFromAlpha2(input string) string {
+	input = punctuationRemover.Replace(input)
+	input = strings.ReplaceAll(input, "  ", " ")
+	for code, names := range alpha2Codes {
+		for _, name := range names {
+			if strings.EqualFold(input, name) {
+				return alpha2ToNumeric[code]
+			}
+		}
+	}
+	return ""
 }
 
 // NumericFromAlpha3 returns the numeric code from a given alpha-3 code.
-func NumericFromAlpha3(alpha3 string) string {
-	return alpha3ToNumeric[strings.ToUpper(alpha3)]
+func NumericFromAlpha3(input string) string {
+	input = punctuationRemover.Replace(input)
+	input = strings.ReplaceAll(input, "  ", " ")
+	for code, names := range alpha3Codes {
+		for _, name := range names {
+			if strings.EqualFold(input, name) {
+				return alpha3ToNumeric[code]
+			}
+		}
+	}
+	return ""
 }
