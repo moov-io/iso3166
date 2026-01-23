@@ -104,3 +104,13 @@ func GetName(code string) string {
 
 	return ""
 }
+
+// NumericFromAlpha2 returns the numeric code from a given alpha-2 code.
+func NumericFromAlpha2(alpha2 string) string {
+	return alpha2ToNumeric[strings.ToUpper(alpha2)]
+}
+
+// NumericFromAlpha3 returns the numeric code from a given alpha-3 code.
+func NumericFromAlpha3(alpha3 string) string {
+	return alpha3ToNumeric[strings.ToUpper(alpha3)]
+}
